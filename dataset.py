@@ -134,9 +134,6 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, idx):
         image, text, idx_new = self.get(idx)
-        # idx = idx_new
-        # print(image,text,idx_new,idx)
-        # print(self.is_training)
         if not self.is_training: assert idx == idx_new, f'idx {idx} != idx_new {idx_new} during testing.'
 
         if self.is_training: image = self._process_training(image)
@@ -183,7 +180,8 @@ class TextDataset(Dataset):
 
     def __getitem__(self, idx):
         text_x = self.df.iloc[idx, self.inp_col]
-        text_x = re.sub('[^0-9a-zA-Z]+', '', text_x)
+        # import pdb; pdb.set_trace();
+        # text_x = re.sub('[^0-9a-zA-Z]+', '', text_x)
         if not self.case_sensitive: text_x = text_x.lower()
         if self.is_training and self.use_sm: text_x = self.sm(text_x)
 
@@ -197,7 +195,7 @@ class TextDataset(Dataset):
         x =  [label_x, length_x]
     
         text_y = self.df.iloc[idx, self.gt_col]
-        text_y = re.sub('[^0-9a-zA-Z]+', '', text_y)
+        # text_y = re.sub('[^0-9a-zA-Z]+', '', text_y)
         if not self.case_sensitive: text_y = text_y.lower()
         length_y = tensor(len(text_y) + 1).to(dtype=torch.long)  # one for end token
         label_y = self.charset.get_labels(text_y, case_sensitive=self.case_sensitive)

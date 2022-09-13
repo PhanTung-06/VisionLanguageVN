@@ -16,7 +16,7 @@ dataset:
   }
   data_aug: True
   multiscales: False
-  num_workers: 2
+  num_workers: 0
 
 training:
   epochs: 500
